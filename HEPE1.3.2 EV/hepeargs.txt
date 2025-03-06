@@ -1,0 +1,137 @@
+HEPE 1.3.2 Command Line Arguments
+
+You can use '/' or '-' symbols as argument prefix.
+Arguments without prefix are wrong and cannot be used!
+
+/autostart - HEPE automatically start erasing process after launching.
+			 This flag is valid ONLY when specified valid /driveindex flag.
+			
+/autoclose - HEPE will be closed automatically after completion of erasing operation.
+			 By default, this flag is disabled.
+			 
+/driveindex=[index of valid \\.\PhysicalDrive path] -
+			 HEPE will automatically select the drive with specified index,
+			 ONLY if it appears in available list after HEPE launching.
+			 This argument is required for /autostart flag.
+
+/ebstype=[standard|custom] -
+			 Determines the type of erasing block size (ebs), default value is 'standard'.
+			 Any other value, that are not included in this enumeration are invalid!
+			 
+/ebsstandardsize=[index] -
+			 Determines the index of standard block size which correspond
+			 same order in standard block sizes combobox.
+			 Available values is:
+			 0 - 4KB
+			 1 - 8KB
+			 2 - 16KB
+			 3 - 32KB
+			 4 - 64KB
+			 5 - 128KB
+			 6 - 256KB
+			 7 - 512KB
+			 8 - 1MB
+			 9 - 2MB
+			 10 - 4MB
+			 11 - 8MB
+			 12 - 16MB
+			 13 - 32MB
+			 14 - 64MB
+			 15 - 128MB
+			 Any other index correspond invalid value and must not be used,
+			 Also this flag is valid ONLY when ebstype=standard.
+			 
+/ebscustomsize=[value]
+			 Determines custom erase block size which must be valid integer value
+			 that multiples on selected drive sector size.
+			 Also this flag is valid ONLY when ebstype=custom
+			 
+/silent - 	 When this flag is specified, HEPE will not show any confirmation, critical error
+			 and operation completion messages, but I/O error messages that appear during
+			 erasing operation will be shown anyway.
+			 By default this flag is disabled.
+
+/skiponerrors -
+			 When this flag is specified, HEPE will not show any I/O error message that can
+			 appear during erasing operation, but any other kind of messages will be shown
+			 anyway.
+			 [NEW in 1.3] Now when this flag is specified HEPE will skip any I/O errors during
+			 volume scanning process.
+			
+If you want to completely disable any messages from HEPE you need to to use combination of
+flags /silent and /skiponerrors.
+
+/saveoperationlog - 
+			 When this flag is specified, HEPE will save operation log on disk. HEPE location
+			 is default if argument /saveoperationlog location is not specified.
+			 
+/saveoperationloglocation=[valid path to log location] - 
+			 When this argument is specified it is valid and it is not empty, 
+			 HEPE will change default log location to user specified value.
+			 HEPE will check this location during program starting and notify user if
+			 location is not exist or cannot be used.
+			 If location is empty, HEPE will use self location.
+			 Highly recommended to use HEPE default location for log placement.
+			 Also this flag is only valid when /saveoperationlog flag specified.
+
+/help - 	 displays this file in default windows text editor 
+			 (most commonly it is %windir%\notepad.exe)
+			 HEPE will show worried message, if this file will not be found.
+
+[Arguments added in 1.3 version]
+
+/dontcheckres - by default HEPE will check your system to matching minimal
+				allowed screen resolution (since 1.3) (Y > 650, X > 700) and show error message
+				if system doesn't match requirements. By turning on this flag you
+				can successfully skip this check.
+				THIS FLAG IS NOT AVAILABLE IN GUI!
+				
+/upscaletominres - if screen resolution doesn't match requirements, HEPE will try to
+				upscale it to minimal allowed resolution (1024 x 768 - that is supported by vga.sys)
+				HEPE will show error message if it fails.
+				THIS FLAG IS NOT AVAILABLE IN GUI!
+				
+/upscaleto32bits - HEPE will force 32bit depth mode while upscaling to minimal allowed resolution.
+					Note that is not all video cards support 32 bit depth.
+					Also this flag is valid only when /upscaletominres flag specified.
+					THIS FLAG IS NOT AVAILABLE IN GUI!
+					
+/topmost -	HEPE will stay on top of other windows.
+			THIS FLAG IS NOT AVAILABLE IN GUI!
+
+/fullscreen - HEPE will launched in fullscreen mode.
+			THIS FLAG IS NOT AVAILABLE IN GUI!
+
+/shutdownonclose - HEPE will shutdown Windows when program closing.
+
+/dontforceshutdown - By default HEPE calls InitiateSystemShutdownA to shutdown Windows.
+					 If it fails, HEPE calls NtShutdownSystem. If you want to prevent
+					 calling NtShutdownSystem function you must turn on this flag.
+					 When this flag is turned on HEPE will show error message if
+					 InitiateSystemShutdownA function fails.
+					 THIS FLAG IS NOT AVAILABLE IN GUI!
+					 
+/dontscanvolumes - Turn on this flag if you don't want that HEPE automatically scans the
+				   drive for mounted volumes. Also this flag will disable manual GPT
+				   partition scanner.
+				   WARNING! This flag also turn on /dontlockvolumes flag so you
+				   shouldn't specify it in argument list. Only one specified flag of this
+				   pair will work properly. You can't disable /dontlockvolumes when this
+				   flag specified!
+				   To skip I/O errors during volume scanning highly recommended to use /skiponerrors 
+				   flag which support this ability from 1.3 version.
+				   
+/dontlockvolumes - Turn on this flag if you don't want that HEPE locks volumes during operation.
+				   WARNING! Turning on this flag can cause unauthorized data lost.
+				   It is not recommended to use this flag.
+				   Also this flag is turned on and can't be disabled when /dontscanvolumes flag specified!
+
+[Arguments added in 1.3.2]
+/hdvlock - by default HEPE will use letter-based volume list for blocking. By setting this flag you can use list
+		based on \\.\HarddiskVolume<index> names in order to block even ntfs-mounted folders
+
+/hdvcount=<value> - note that this flag is only valid when hdvlock flag is presented. This flag is needed when you want to change default max
+		index value (128). This value must be bigger than 1 and have integer type.
+
+/hdverrflag - When called ZgBuildBLockPartList2 function is called, lasterror code 2 is now presented in log file.
+					   
